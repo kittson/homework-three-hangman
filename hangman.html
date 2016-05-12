@@ -9,28 +9,32 @@
 	<link href='https://fonts.googleapis.com/css?family=Sunshiney' rel='stylesheet' type='text/css'>
 </head>
 <body id="bodyParts" class="gameBack">
-<div class="textboxtop">
-<p><h2>Guess the Word Game</h2> <h3>aka Hangman</h3></p>
-<h3> type a letter ... </h3>
-</div>
-
-	<div id="hangmangame">
-
+	<div class="textOnTop">
+		<p><h2>Guess the Word Game</h2> <h3>aka Hangman Psycho Kitty</h3></p>
+		<h3> type a letter ... </h3>		
 	</div>
+	<div id="gameBox">
+		<div id="goodGuess"></div>
+		<div id="badGuess"></div>
+		<div id="gameLength"></div>
+	</div>
+	<div id = "boxside" >
+		<h4 id="winsNum"> Wins  </h4>
+		<h4 id="lossNum"> Losses  </h4>			
+	</div>
+	
+	<div id="hangmangame"></div>
 
 	<script type="text/javascript">
 
 // things to do
-// fix good letters showing in bad letter display
+// fix text output to use getElem instead of current 
 
 	var pos = 0;
-	var tries = 0;
 	var losses = 0;
 	var wins = 0;
-	var pp;
 	var badGuesses = 0;
 	var underBar = '_';	
-	var tmp;
 	var numLetters;
 	var alphaChars = "[a-z]"; // valid chars
 	var storeGoodLetters = [];
@@ -51,7 +55,8 @@
 	var songPlaying = false;	
 
 	// list of words to use
-	var dictionary = ['abbreviate','salutations','initiate', 'pattern', 'jazz', 'abruptly', 'roasted','parakeet', 'season' , 'quality' , 'verbose'];
+	//var dictionary = ['abbreviate','salutations','initiate', 'pattern', 'jazz', 'abruptly', 'roasted','parakeet', 'season' , 'quality' , 'verbose'];
+	var dictionary = ['siamese','tuxedo','housecat','calico', 'tabby','tortoiseshell','black','smoke'];
 	
 	// functions
 	function findTargetWord(dict) {
@@ -63,8 +68,8 @@
 		return( tWord);
 	}
 
-	function changeBackground(changeClass){
-		newClassName = changeClass;
+	function changeClass(classToChange){
+		newClassName = classToChange;
 		document.getElementById("bodyParts").className = newClassName;
 	}
 
@@ -91,7 +96,10 @@
 	}	
 	
 	function gameSetUp(){
-		changeBackground("gameBack");		
+		changeClass("gameBack");
+		document.getElementById("winsNum").innerHTML = "Wins: " + wins;
+		document.getElementById("lossNum").innerHTML = "Losses: " + losses;	
+
 		storeGoodLetters = [];
 		storeBadLetters = [];
 	 	storeAllLetters = [];
@@ -103,10 +111,9 @@
 		lengthOfGame = goodGuesses = badGuesses = targetLetters.length;		
 		for ( var i = 0; i < targetLetters.length; i++) {
 			goodGuessLetters.push( underBar);
-			// can't get this to work, from Roger's session, reverting to first method
-			//document.getElementById('blanks').innerHTML = goodGuessLetters;
 			console.log( "target word is " + targetWord);
-		}		
+		}
+		document.getElementById("goodGuess").innerHTML = goodGuessLetters;		
 	}
 	function sleep(milliseconds) {
 		var start = new Date().getTime();
@@ -128,8 +135,7 @@
 		
 		if ( isLetter(userInput) ) {
 
-			if ( badGuesses > 0 && goodGuesses > 0 ) {
-				console.log( "good guesses starting " + goodGuesses);
+			if ( badGuesses > 0 && goodGuesses > 0 ) {				
 				if ( targetLetters.indexOf(userInput)  >= 0 ) {	
 					numLetters = howManyInArray(targetLetters, userInput);
 					for (var i = 0; i < numLetters; i++) {
@@ -138,16 +144,21 @@
 						goodGuessLetters.splice( pos, 1, userInput);
 						lettersLeft.splice( 0, 1);
 						targetLetters.splice( pos, 1, underBar);					
-						goodGuesses--;	
-						console.log( "good guesses in for loop " + goodGuesses);
-						storeAllLetters.push(userInput);	
-						if ( goodGuesses === 0) {	
-				 			changeBackground("winBack");	 		
-				 			cheerMeows.play();
-				 			//meowMix.play();				 			
-				 			//confirm ("Game complete, press OK to start again!");
-				 			//none of these work!  completely frusticated!
-			 				//cheerKitten.addEventListener("ended", changeBackground("gameBack"));
+						goodGuesses--;							
+						storeAllLetters.push(userInput);
+						document.getElementById("goodGuess").innerHTML = goodGuessLetters;
+						document.getElementById("gameLength").innerHTML = "guesses left:  " + lengthOfGame;	
+						if ( goodGuesses === 0) {
+							wins++;	
+				 			if ( wins == 2 ) {
+				 				changeClass("winBack2");	
+				 			}
+				 			else {
+				 				changeClass("winBack");
+				 			} 		
+				 			cheerMeows.play();				 			
+				 			document.getElementById("winsNum").innerHTML = "Wins: " + wins;
+				 			document.getElementById("gameLength").innerHTML = "";
 			 				cheerMeows.addEventListener("ended", function(){ gameSetUp();}, false);
 						}
 					}			
@@ -163,8 +174,13 @@
 						badGuesses--;
 						lengthOfGame--;
 						storeAllLetters.push(userInput);
+						document.getElementById("badGuess").innerHTML = "bad guesses: " + storeBadLetters;
+						document.getElementById("gameLength").innerHTML = "guesses left:  " + lengthOfGame;	
 						if ( badGuesses === 0) {
-							changeBackground("loseBack");
+							losses++;
+							changeClass("loseBack");
+							document.getElementById("lossNum").innerHTML = "Losses: " + losses;
+							document.getElementById("gameLength").innerHTML = "You Lose!";
 		 					sad.play();
 		 					sad.addEventListener("ended", function(){ gameSetUp();}, false);
 		 				}
@@ -173,15 +189,21 @@
 		 	} //if badGuesses
 		 	
 			var html = 				
-				"<div class = 'mainbox' >" +
-				"<h1>" + 
-				goodGuessLetters + 
-				"</h1> <p> guesses left " + 
-				lengthOfGame +
-				"</p> <p> Bad Guesses:  " +
-				storeBadLetters +				
-				"</p> </div>";
-
+				//"<div id = 'topText' >" +
+				//"<h1>" + 
+				//goodGuessLetters + 
+				//"</h1>"
+				//" <p> guesses left " + 
+				//lengthOfGame +
+				//"</p>" +
+				//" <p> Bad Guesses:  " +
+				//storeBadLetters +				
+				//"</p> </div>" +
+				//"<h4>" +
+				//wins +
+				//"</h4> <h4>" +
+				//losses;
+				"<h4></h4>"
 				document.querySelector('#hangmangame').innerHTML = html; 
 		} //if isLetter
 		else {
