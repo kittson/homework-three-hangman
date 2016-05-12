@@ -1,0 +1,92 @@
+
+/**
+css style sheet for hangman html page homework assignment, Booth Kittson
+**/
+
+body {	   
+}
+#bodyParts {
+	background-size: 75%;
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right;
+}
+.gameBack {
+	background-color: #011015;
+	background-image: url("../images/bgcatheadpaws.png");
+}
+
+.winBack {
+	background-color: #011015;
+	background-image: url("../images/bgWintext2.png");
+}
+.loseBack {
+	background-color: #011015;
+	background-image: url("../images/bgLose.png");
+}
+	
+}
+p {
+	font-size: 40px;
+	font-weight: normal;
+	text-align: center;
+	font-family: 'Amatic SC', sans-serif;
+	color: #FFFFFF;
+}
+h2 {
+	margin-left: 5%;
+	margin-right: 30%;
+	margin-top: 30px;
+	font-size: 45px;
+	font-weight: normal;
+	text-align: center;
+	
+}
+.textboxtop {
+	margin-left: 5%;
+	margin-right: 30%;
+	margin-top: 30px;
+	font-family: 'Sunshiney', sans-serif;
+	color: #F0B663;
+}
+
+
+.textboxtop h2 {	
+	font-size: 45px;
+	font-weight: normal;
+	text-align: center;
+	
+}
+
+.textboxtop h3 {
+	font-size: 35px;
+	font-weight: normal;
+	text-align: center;
+}
+#hangmangame {
+	height: 200px;
+	margin-top: 50px;
+	width: 50%;
+	margin-left: 10%;
+	margin-right: 25%;
+	position: inherit;
+	border: solid; 
+	border-color: #CA12D6;
+}
+
+.mainbox h1 {
+	font-size: 40px;
+	font-weight: normal;
+	text-align: center;
+	margin-top: 15px;
+	font-family: 'Amatic SC', sans-serif;
+	color: #FFFFFF;
+} 
+.mainbox p {
+	font-size: 30px;
+	font-weight: normal;
+	text-align: center;
+	margin-top: 18px;
+	font-family: 'Sunshiney', sans-serif;
+	color: #FFFFFF;
+}
