@@ -156,7 +156,7 @@
 				 			cheerMeows.play();				 			
 				 			document.getElementById("winsNum").innerHTML = "Wins: " + wins;
 				 			document.getElementById("gameLength").innerHTML = "";
-			 				cheerMeows.addEventListener("ended", function(){ gameSetUp();}, false);
+			 				cheerMeows.addEventListener("ended", gameSetUp);// function(){ gameSetUp();}, false);
 						}
 					}			
 				}
